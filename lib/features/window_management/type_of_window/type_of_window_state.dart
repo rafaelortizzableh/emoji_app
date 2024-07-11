@@ -6,7 +6,9 @@ enum TypeOfWindow {
   settings,
   home,
   selectedTeammate,
-  emojiRain;
+  emojiRain,
+  empty,
+  ;
 
   const TypeOfWindow();
 
@@ -18,6 +20,8 @@ enum TypeOfWindow {
         return TypeOfWindow.settings;
       case EmojiRainPage.routePath:
         return TypeOfWindow.emojiRain;
+      case EmptyWindowPage.routePath:
+        return TypeOfWindow.empty;
       default:
         return TypeOfWindow.home;
     }
@@ -75,6 +79,7 @@ extension RouteNameExtension on TypeOfWindow {
   static const _notification = 'Notifications';
   static const _selectedTeammate = 'Selected_Teammate';
   static const _emojiRain = EmojiRainPage.routeName;
+  static const _empty = EmptyWindowPage.routeName;
 
   String get routeName {
     switch (this) {
@@ -88,6 +93,8 @@ extension RouteNameExtension on TypeOfWindow {
         return _selectedTeammate;
       case TypeOfWindow.emojiRain:
         return _emojiRain;
+      case TypeOfWindow.empty:
+        return _empty;
     }
   }
 
@@ -103,6 +110,8 @@ extension RouteNameExtension on TypeOfWindow {
         return _notification;
       case TypeOfWindow.selectedTeammate:
         return _selectedTeammate;
+      case TypeOfWindow.empty:
+        return EmptyWindowPage.routePath;
     }
   }
 }

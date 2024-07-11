@@ -125,7 +125,10 @@ class MacOSWindowManagementService extends WindowManagementService {
       shouldRemainOnTop: false,
     );
     ref.read(typeOfWindowProvider.notifier).setSettingsWindow();
-    await ref.read(windowManagerProvider).show();
+    final isFocused = await ref.read(windowManagerProvider).isFocused();
+    if (!isFocused) {
+      await ref.read(windowManagerProvider).show();
+    }
   }
 
   @override
@@ -157,8 +160,11 @@ class MacOSWindowManagementService extends WindowManagementService {
     setWindowResizable(false);
     await toggleWindowButtonsVisibility(false);
 
-    await ref.read(windowManagerProvider).show();
-    await ref.read(windowManagerProvider).focus();
+    final isFocused = await ref.read(windowManagerProvider).isFocused();
+    if (!isFocused) {
+      await ref.read(windowManagerProvider).show();
+      await ref.read(windowManagerProvider).focus();
+    }
   }
 
   @override

@@ -60,7 +60,9 @@ void _updateWindowSettings({
     case TypeOfWindow.emojiRain:
       windowManagementService.showEmojiRainWindow();
       break;
+    case TypeOfWindow.empty:
     case TypeOfWindow.notification:
+      windowManagementService.showPopup();
     case TypeOfWindow.selectedTeammate:
       break;
   }

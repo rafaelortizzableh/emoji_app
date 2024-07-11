@@ -44,6 +44,12 @@ class TypeOfWindowController extends StateNotifier<TypeOfWindowState> {
     );
   }
 
+  void setEmptyWindow() {
+    state = state.copyWith(
+      typeOfWindow: TypeOfWindow.empty,
+    );
+  }
+
   void toggleIsResizingToSecondWindow(bool isResizing) {
     state = state.copyWith(
       isResizingToSecondWindow: isResizing,

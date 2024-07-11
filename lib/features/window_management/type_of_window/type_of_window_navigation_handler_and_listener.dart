@@ -37,6 +37,9 @@ void _syncTypeOfWindowWithCurrentRoute(AutoDisposeRef ref) {
     case TypeOfWindow.emojiRain:
       ref.read(typeOfWindowProvider.notifier).setEmojiRainWindow();
       break;
+    case TypeOfWindow.empty:
+      ref.read(typeOfWindowProvider.notifier).setEmptyWindow();
+      break;
     case TypeOfWindow.notification:
     case TypeOfWindow.selectedTeammate:
       break;

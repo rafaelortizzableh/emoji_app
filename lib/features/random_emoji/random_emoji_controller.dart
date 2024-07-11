@@ -12,9 +12,25 @@ final randomEmojiProvider =
 });
 
 class RandomEmojiNotifier extends StateNotifier<(String, int)> {
-  static Size get _viewSize =>
-      AppConstants.defaultNavigationKey.currentContext?.size ??
-      AppConstants.defaultAppDimensions;
+  static Size get _viewSize {
+    if (AppConstants.isDesktopPlatform) {
+      return AppConstants.defaultAppDimensions;
+    }
+
+    final physicalSize =
+        AppConstants.defaultNavigationKey.currentContext?.size ??
+            AppConstants.defaultAppDimensions;
+
+    final minWidth = min(
+      physicalSize.width,
+      AppConstants.defaultAppDimensions.width,
+    );
+    final minHeight = min(
+      physicalSize.height,
+      AppConstants.defaultAppDimensions.height,
+    );
+    return Size(minWidth, minHeight);
+  }
 
   RandomEmojiNotifier() : super(('🛡️', 32)) {
     updateEmoji();

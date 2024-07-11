@@ -97,7 +97,7 @@ abstract class WindowManagementService {
     final windowManager = ref.read(windowManagerProvider);
 
     if (hideOnOutsideClick != null) {
-      // windowManager.setHideOnDeactivate(hideOnOutsideClick);
+      windowManager.setHideOnDeactivate(hideOnOutsideClick);
     }
 
     if (shouldRemainOnTop != null) {

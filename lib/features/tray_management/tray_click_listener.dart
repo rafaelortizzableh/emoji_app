@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tray_manager/tray_manager.dart' hide trayManager;
 
@@ -36,7 +37,6 @@ class TrayClickListener extends TrayListener {
     }
 
     // Otherwise, open the app.
-    _ref.read(typeOfWindowProvider.notifier).setHomeWindow();
     await _ref.read(appServiceProvider).openApp();
   }
 
@@ -76,11 +76,39 @@ class TrayClickListener extends TrayListener {
                   ],
                 ),
               ),
+              MenuItem(
+                label: 'Settings',
+                onClick: (_) async {
+                  final currentWindowType =
+                      _ref.read(typeOfWindowProvider).typeOfWindow;
+                  if (currentWindowType == TypeOfWindow.settings) {
+                    _ref.read(routerProvider).go(EmptyWindowPage.routePath);
+                    await Future.microtask(() {});
+                  }
+                  _ref.read(typeOfWindowProvider.notifier).setSettingsWindow();
+                },
+              ),
+              MenuItem(
+                label: 'Make it rain ${_ref.read(randomEmojiProvider).$1}',
+                onClick: (_) async {
+                  final currentWindowType =
+                      _ref.read(typeOfWindowProvider).typeOfWindow;
+                  if (currentWindowType == TypeOfWindow.emojiRain) {
+                    _ref.read(routerProvider).go(EmptyWindowPage.routePath);
+                    await Future.delayed(100.milliseconds);
+                  }
+                  _ref.read(typeOfWindowProvider.notifier).setEmojiRainWindow();
+                },
+              ),
+              MenuItem(
+                label: 'New Random Emoji',
+                onClick: (_) async {
+                  _ref.read(randomEmojiProvider.notifier).updateEmoji();
+                },
+              ),
               MenuItem.separator(),
               MenuItem(
-                label:
-                    // l10n?.quitMenuItemTitle(packageInfo.appName) ??
-                    'Quit Emoji App',
+                label: 'Quit Emoji App',
                 onClick: (_) {
                   _ref.read(appServiceProvider).quitApp();
                 },

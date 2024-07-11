@@ -21,13 +21,20 @@ class EmojiRainPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final emoji = ref.watch(randomEmojiProvider).$1;
+    final onHideApp = ref.read(appServiceProvider).hideApp;
     useEffect(
       () {
         if (!AppConstants.isDesktopPlatform) {
           ref.read(routerProvider).goNamed(HomePage.routeName);
           return;
         }
-        _showEmojiRain(context: context, ref: ref);
+        _showEmojiRain(
+          context: context,
+          emoji: emoji,
+          onHideApp: onHideApp,
+          shouldHideAppAfterAnimation: AppConstants.isDesktopPlatform,
+        );
         return null;
       },
       const [],
@@ -42,15 +49,19 @@ class EmojiRainPage extends HookConsumerWidget {
 
   Future<void> _showEmojiRain({
     required BuildContext context,
-    required WidgetRef ref,
+    required String emoji,
+    required VoidCallback onHideApp,
+    required bool shouldHideAppAfterAnimation,
   }) async {
     Future.microtask(() {});
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
-        final emoji = ref.read(randomEmojiProvider).$1;
-        await EmojiRainOverlay.show(context, emoji);
-        if (AppConstants.isDesktopPlatform) {
-          ref.read(appServiceProvider).hideApp();
+        await EmojiRainOverlay.show(
+          context,
+          emoji,
+        );
+        if (shouldHideAppAfterAnimation) {
+          onHideApp();
         }
       },
     );
@@ -58,26 +69,37 @@ class EmojiRainPage extends HookConsumerWidget {
 }
 
 class EmojiRainOverlay extends StatefulWidget {
-  final Widget child;
-  final String emoji;
-  final Duration delay;
-  final Completer<bool> animationCompleted;
-
   const EmojiRainOverlay({
     required this.child,
-    required this.emoji,
     required this.animationCompleted,
+    required this.emojiItemsToAnimate,
+    this.delay = const Duration(milliseconds: 0),
     super.key,
-    this.delay = const Duration(milliseconds: 200),
   });
 
-  static Future<void> show(BuildContext context, String emoji) async {
+  final Widget child;
+  final Duration delay;
+  final Completer<bool> animationCompleted;
+  final List<AnimatedEmojiItem> emojiItemsToAnimate;
+
+  static Future<void> show(
+    BuildContext context,
+    String emoji,
+  ) async {
     final overlay = Overlay.of(context);
     final completer = Completer<bool>();
 
+    final emojiList = _generateEmojiItems(
+      emoji: emoji,
+      width: MediaQuery.sizeOf(context).width,
+    );
+
     final overlayEntry = OverlayEntry(
       builder: (_) => EmojiRainOverlay(
-        emoji: emoji,
+        key: Key(
+          'emoji_rain_overlay_${DateTime.now().millisecondsSinceEpoch}',
+        ),
+        emojiItemsToAnimate: emojiList,
         animationCompleted: completer,
         delay: Duration.zero,
         child: const SizedBox.expand(
@@ -85,6 +107,7 @@ class EmojiRainOverlay extends StatefulWidget {
         ),
       ),
     );
+
     overlay.insert(overlayEntry);
     if (await completer.future) {
       overlayEntry.remove();
@@ -115,323 +138,12 @@ class _EmojiRainOverlayState extends State<EmojiRainOverlay> {
   }
 
   void _startAnimation() {
-    _assignEmoji();
     HapticFeedback.mediumImpact();
   }
 
-  final emojiItemsToAnimate = <_EmojiConfettiItem>[];
+  late final emojiItemsToAnimate = widget.emojiItemsToAnimate;
   final ValueNotifier<List<int>> _animationsCompletedListener =
       ValueNotifier([]);
-
-  void _assignEmoji() {
-    final emoji = widget.emoji;
-    final width = MediaQuery.sizeOf(context).width;
-    final regularItems = [
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1500),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 50,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1700),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 60,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 60,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2010),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 70,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2050),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 80,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2150),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 80,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2200),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 84,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2800),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 86,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 60,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2100),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 64,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1200),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 66,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1600),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 74,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1800),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 76,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 1900),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 78,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2200),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 80,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2400),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 82,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2700),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 84,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 86,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 88,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 90,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 92,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-      _EmojiConfettiItem(
-        duration: const Duration(milliseconds: 2000),
-        emoji: emoji,
-        leftPosition: width * Random().nextDouble(),
-        topPosition: Random().nextInt(250).toDouble(),
-        rotationMultiplier: Random().nextInt(14) + 1,
-        iconSize: 94,
-      ),
-    ];
-
-    setState(() {
-      emojiItemsToAnimate.addAll([
-        ...regularItems,
-        ...regularItems.reversed,
-      ]);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -440,6 +152,7 @@ class _EmojiRainOverlayState extends State<EmojiRainOverlay> {
         children: [
           widget.child,
           Stack(
+            clipBehavior: Clip.none,
             children: [
               ...emojiItemsToAnimate.mapIndexed(
                 (index, item) => _AnimatingEmoji(
@@ -482,7 +195,7 @@ class _AnimatingEmoji extends StatelessWidget {
   });
 
   final int index;
-  final _EmojiConfettiItem emojiItem;
+  final AnimatedEmojiItem emojiItem;
   final Function(bool) animationCompleted;
 
   @override
@@ -490,22 +203,16 @@ class _AnimatingEmoji extends StatelessWidget {
     return Positioned(
       left: emojiItem.leftPosition,
       top: emojiItem.topPosition,
-      child: SizedBox(
-        width: emojiItem.iconSize,
-        height: emojiItem.iconSize,
-        child: FittedBox(
-          child: Transform.rotate(
-            alignment: Alignment.bottomCenter,
-            angle: -pi / (getSign(index) * emojiItem.rotationMultiplier),
-            child: Material(
-              textStyle: TextStyle(
-                fontSize: emojiItem.iconSize,
-              ),
-              color: Colors.transparent,
-              child: Text(
-                emojiItem.emoji,
-              ),
-            ),
+      child: Transform.rotate(
+        alignment: Alignment.bottomCenter,
+        angle: -pi / (getSign(index) * emojiItem.rotationMultiplier),
+        child: Material(
+          textStyle: TextStyle(
+            fontSize: emojiItem.iconSize,
+          ),
+          color: Colors.transparent,
+          child: Text(
+            emojiItem.emoji,
           ),
         ),
       ),
@@ -530,8 +237,8 @@ class _AnimatingEmoji extends StatelessWidget {
   int getSign(int index) => index.isEven ? -1 : 1;
 }
 
-class _EmojiConfettiItem {
-  _EmojiConfettiItem({
+class AnimatedEmojiItem {
+  AnimatedEmojiItem({
     required this.emoji,
     required this.duration,
     required this.iconSize,
@@ -551,7 +258,7 @@ class _EmojiConfettiItem {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is _EmojiConfettiItem &&
+    return other is AnimatedEmojiItem &&
         other.emoji == emoji &&
         other.duration == duration &&
         other.iconSize == iconSize &&
@@ -569,4 +276,33 @@ class _EmojiConfettiItem {
         topPosition.hashCode ^
         rotationMultiplier.hashCode;
   }
+}
+
+List<AnimatedEmojiItem> _generateEmojiItems({
+  required String emoji,
+  required double width,
+}) {
+  final random = Random();
+  final emojiItems = <AnimatedEmojiItem>[];
+
+  for (var i = 0; i < 100; i++) {
+    final leftPosition = random.nextDouble() * width;
+    final topPosition = random.nextInt(250).toDouble();
+    final duration = Duration(milliseconds: 1000 + random.nextInt(2000));
+    final rotationMultiplier = random.nextInt(4) + 1;
+    final iconSize = random.nextInt(50) + 50.0;
+
+    emojiItems.add(
+      AnimatedEmojiItem(
+        emoji: emoji,
+        duration: duration,
+        iconSize: iconSize,
+        leftPosition: leftPosition,
+        topPosition: topPosition,
+        rotationMultiplier: rotationMultiplier,
+      ),
+    );
+  }
+
+  return emojiItems;
 }

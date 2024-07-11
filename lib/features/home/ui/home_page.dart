@@ -71,7 +71,10 @@ class HomePage extends HookConsumerWidget {
                         .setEmojiRainWindow();
                     return;
                   }
-                  EmojiRainOverlay.show(context, currentEmoji);
+                  EmojiRainOverlay.show(
+                    context,
+                    currentEmoji,
+                  );
                 },
                 tooltip: 'Emoji Rain',
                 child: const Icon(CupertinoIcons.drop_fill),

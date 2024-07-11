@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,6 +10,20 @@ final routerProvider = Provider.autoDispose<GoRouter>(
   (ref) {
     return GoRouter(
       routes: [
+        GoRoute(
+          path: EmptyWindowPage.routePath,
+          name: EmptyWindowPage.routeName,
+          parentNavigatorKey: AppConstants.defaultNavigationKey,
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              transitionDuration: 0.milliseconds,
+              reverseTransitionDuration: 0.milliseconds,
+              name: EmptyWindowPage.routeName,
+              transitionsBuilder: (_, __, ___, child) => child,
+              child: const EmptyWindowPage(),
+            );
+          },
+        ),
         GoRoute(
           path: HomePage.routePath,
           name: HomePage.routeName,

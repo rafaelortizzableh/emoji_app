@@ -72,6 +72,8 @@ Future<void> typeOfWindowSizeHandler({
         windowOptionsController: windowOptionsController,
       );
       break;
+    case TypeOfWindow.empty:
+      break;
     case TypeOfWindow.selectedTeammate:
       // await _handleTeammateSelectedWindowResize(
       //   windowManager: windowManager,
