@@ -7,18 +7,6 @@ import 'package:window_size/window_size.dart' as window_size;
 import '../../../core/core.dart';
 import '../../features.dart';
 
-final typeOfWindowSizeListenerProvider = Provider.autoDispose<void>(
-  (ref) {
-    ref.listen(
-      typeOfWindowProvider.select((state) => state.typeOfWindow),
-      (previous, next) => _typeOfWindowSizeHandler(
-        typeOfWindow: next,
-        ref: ref,
-      ),
-    );
-  },
-);
-
 final _resizeNotificationsWindowBasedOnNotificationsProvider =
     Provider.autoDispose<void>(
   (ref) {
@@ -44,7 +32,7 @@ final _resizeNotificationsWindowBasedOnNotificationsProvider =
   },
 );
 
-Future<void> _typeOfWindowSizeHandler({
+Future<void> typeOfWindowSizeHandler({
   required Ref ref,
   required TypeOfWindow typeOfWindow,
 }) async {
@@ -211,6 +199,8 @@ Future<void> _handleSettingsWindowResize({
     windowManager.setSize(windowSize),
     windowManager.setMaximumSize(maxSize),
   ]);
+
+  await Future.microtask(() {});
   await windowManager.center();
   windowOptionsController.updateWindowOptions(
     WindowOptions(

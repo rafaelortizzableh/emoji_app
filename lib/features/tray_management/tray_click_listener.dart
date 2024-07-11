@@ -82,7 +82,7 @@ class TrayClickListener extends TrayListener {
                     // l10n?.quitMenuItemTitle(packageInfo.appName) ??
                     'Quit Emoji App',
                 onClick: (_) {
-                  // _ref.read(appServiceProvider).quitApp();
+                  _ref.read(appServiceProvider).quitApp();
                 },
               ),
             ],

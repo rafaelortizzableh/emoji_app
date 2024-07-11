@@ -104,7 +104,7 @@ class HomePage extends HookConsumerWidget {
               FloatingActionButton.small(
                 heroTag: const Key('settings'),
                 onPressed: () {
-                  context.push(SettingsPage.routePath);
+                  context.go(SettingsPage.routePath);
                 },
                 tooltip: 'Settings',
                 child: const Icon(CupertinoIcons.settings),

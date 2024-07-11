@@ -5,4 +5,3 @@ export 'window_events_listener.dart';
 export 'window_manager_provider.dart';
 export 'window_options_controller.dart';
 export 'window_service.dart';
-export 'window_type_navigation_observer.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/core.dart';
@@ -15,27 +14,26 @@ class WindowListenersWrapper extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// Maintains the `currentRouteUriProvider` active.
+    ref.watch(currentRouteUriProvider);
+
+    /// Syncs the TypeOfWindow with the current route.
+    ref.watch(typeOfWindowNavigationListener);
+
+    /// Listens to the TypeOfWindow and updates the
+    /// window settings and navigates if needed.
+    ref.watch(typeOfWindowRouteAndWindowSettingsListenerProvider);
+
     if (!AppConstants.isDesktopPlatform) {
       return child;
     }
-    final goRouter = ref.watch(routerProvider);
-    final currentRouteInfo =
-        useValueListenable(goRouter.routeInformationProvider);
 
+    /// Listens to the `randomEmojiProvider`
+    /// and updates the tray icon message if needed.
     ref.watch(trayIconUpdaterListenerProvider);
-    ref.watch(windowOptionsProvider);
-    ref.watch(typeOfWindowSizeListenerProvider);
-    ref.watch(popDialogsOnWindowChangedListenerProvider);
-    ref.watch(currentRouteNameProvider);
-    ref.listen<TypeOfWindow>(
-      typeOfWindowProvider.select((tps) => tps.typeOfWindow),
-      (previous, next) {
-        final currentRoutePath = currentRouteInfo.uri;
 
-        if (next.routePath == currentRoutePath.path) return;
-        goRouter.goNamed(next.routeName);
-      },
-    );
+    /// Keeps the `windowOptionsProvider` active.
+    ref.watch(windowOptionsProvider);
 
     return child;
   }

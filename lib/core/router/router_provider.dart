@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../features/features.dart';
-import 'core.dart';
+import '../../features/features.dart';
+import '../core.dart';
 
 final routerProvider = Provider.autoDispose<GoRouter>(
   (ref) {
@@ -105,10 +105,6 @@ final routerProvider = Provider.autoDispose<GoRouter>(
         ),
       ],
       navigatorKey: AppConstants.defaultNavigationKey,
-      observers: [
-        WindowTypeNavigationObserver(ref),
-        RouteNameNavigationObserver(ref),
-      ],
       initialLocation: HomePage.routePath,
     );
   },

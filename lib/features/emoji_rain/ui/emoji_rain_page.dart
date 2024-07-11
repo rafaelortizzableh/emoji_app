@@ -27,7 +27,7 @@ class EmojiRainPage extends HookConsumerWidget {
           ref.read(routerProvider).goNamed(HomePage.routeName);
           return;
         }
-        _showEmojiConfetti(context: context, ref: ref);
+        _showEmojiRain(context: context, ref: ref);
         return null;
       },
       const [],
@@ -40,7 +40,7 @@ class EmojiRainPage extends HookConsumerWidget {
     );
   }
 
-  Future<void> _showEmojiConfetti({
+  Future<void> _showEmojiRain({
     required BuildContext context,
     required WidgetRef ref,
   }) async {

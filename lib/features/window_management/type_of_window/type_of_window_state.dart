@@ -1,7 +1,28 @@
 // Note(rafaelortizzableh): Add new types of windows here.
 import '../../features.dart';
 
-enum TypeOfWindow { notification, settings, home, selectedTeammate, emojiRain }
+enum TypeOfWindow {
+  notification,
+  settings,
+  home,
+  selectedTeammate,
+  emojiRain;
+
+  const TypeOfWindow();
+
+  static TypeOfWindow fromRoutePath(String routePath) {
+    switch (routePath) {
+      case HomePage.routePath:
+        return TypeOfWindow.home;
+      case SettingsPage.routePath:
+        return TypeOfWindow.settings;
+      case EmojiRainPage.routePath:
+        return TypeOfWindow.emojiRain;
+      default:
+        return TypeOfWindow.home;
+    }
+  }
+}
 
 class TypeOfWindowState {
   const TypeOfWindowState({
