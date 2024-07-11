@@ -46,6 +46,7 @@ final routerProvider = Provider.autoDispose<GoRouter>(
             return CustomTransitionPage(
               name: EmojiRainPage.routeName,
               child: const EmojiRainPage(),
+              opaque: true,
               transitionDuration: const Duration(milliseconds: 0),
               reverseTransitionDuration: const Duration(milliseconds: 0),
               transitionsBuilder: (context, animation, _, child) {
@@ -74,7 +75,6 @@ final routerProvider = Provider.autoDispose<GoRouter>(
               child: const SettingsPage(),
               transitionDuration: const Duration(milliseconds: 300),
               reverseTransitionDuration: const Duration(milliseconds: 50),
-              opaque: true,
               transitionsBuilder: (
                 context,
                 animation,

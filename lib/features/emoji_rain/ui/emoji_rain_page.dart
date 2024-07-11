@@ -49,7 +49,9 @@ class EmojiRainPage extends HookConsumerWidget {
       (_) async {
         final emoji = ref.read(randomEmojiProvider).$1;
         await EmojiRainOverlay.show(context, emoji);
-        ref.read(typeOfWindowProvider.notifier).setHomeWindow();
+        if (AppConstants.isDesktopPlatform) {
+          ref.read(appServiceProvider).hideApp();
+        }
       },
     );
   }

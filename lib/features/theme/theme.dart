@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/core.dart';
 import 'colors.dart';
 import 'theme_fonts.dart';
 
@@ -14,13 +15,19 @@ class CustomTheme {
       colorScheme: ColorScheme.fromSeed(
         brightness: Brightness.dark,
         seedColor: AppColors.purple,
-        surface: Colors.transparent,
+        surface: AppConstants.isDesktopPlatform
+            ? Colors.transparent
+            : AppColors.backgroundColor,
       ),
-      // The canvasColor, backgroundColor, scaffoldBackgroundColor
+      // The canvasColor, scaffoldBackgroundColor
       // properties are transparent so we can
       // show multiple windows side by side.
-      canvasColor: Colors.transparent,
-      scaffoldBackgroundColor: Colors.transparent,
+      canvasColor: AppConstants.isDesktopPlatform
+          ? Colors.transparent
+          : AppColors.backgroundColor,
+      scaffoldBackgroundColor: AppConstants.isDesktopPlatform
+          ? Colors.transparent
+          : AppColors.backgroundColor,
       fontFamily: ThemeFonts.inter,
       textSelectionTheme: theme.textSelectionTheme.copyWith(
         cursorColor: AppColors.white75transparency,
@@ -75,6 +82,20 @@ class CustomTheme {
           (states) {
             return AppColors.grey6;
           },
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
         ),
       ),
     );

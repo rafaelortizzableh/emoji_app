@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 enum AppOptionType {
@@ -45,6 +46,7 @@ class AppDualOptionSwitch extends StatelessWidget {
     super.key,
     required this.options,
     required this.onOptionPressed,
+    this.isBlocked = false,
   })  : assert(
           options.length == 2,
           '$AppDualOptionSwitch must have exactly 2 options',
@@ -55,19 +57,29 @@ class AppDualOptionSwitch extends StatelessWidget {
         );
   final List<AppOption> options;
   final OnAppOptionPressed onOptionPressed;
+  final bool isBlocked;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final option in options)
-          _AppOptionButton(
-            key: ObjectKey('$option'),
-            option: option,
-            onOptionPressed: onOptionPressed,
-          ),
-      ],
+    return IgnorePointer(
+      ignoring: isBlocked,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...options.mapIndexed((index, option) {
+            final isFirst = index == 0;
+            return Padding(
+              padding: EdgeInsets.only(left: isFirst ? 0 : 8),
+              child: _AppOptionButton(
+                key: ObjectKey('$option'),
+                option: option,
+                onOptionPressed: onOptionPressed,
+                isBlocked: isBlocked,
+              ),
+            );
+          }),
+        ],
+      ),
     );
   }
 }
@@ -77,9 +89,12 @@ class _AppOptionButton extends StatelessWidget {
     super.key,
     required this.option,
     required this.onOptionPressed,
+    this.isBlocked = false,
   });
+
   final AppOption option;
   final OnAppOptionPressed onOptionPressed;
+  final bool isBlocked;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +122,7 @@ class _AppOptionButton extends StatelessWidget {
           ),
         ] else ...[
           TextButton(
-            onPressed: () => onOptionPressed(option),
+            onPressed: isBlocked ? null : () => onOptionPressed(option),
             child: Text(callToAction),
           ),
         ],

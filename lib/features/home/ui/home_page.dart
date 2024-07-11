@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/core.dart';
@@ -104,7 +103,8 @@ class HomePage extends HookConsumerWidget {
               FloatingActionButton.small(
                 heroTag: const Key('settings'),
                 onPressed: () {
-                  context.go(SettingsPage.routePath);
+                  final goRouter = ref.read(routerProvider);
+                  goRouter.push(SettingsPage.routePath);
                 },
                 tooltip: 'Settings',
                 child: const Icon(CupertinoIcons.settings),

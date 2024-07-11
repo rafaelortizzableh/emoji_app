@@ -25,7 +25,7 @@ class MenuBarSettings extends ConsumerWidget {
         const SizedBox(height: 10.0),
         SettingTile(
           showOnOffSwitch: false,
-          isSettingToggled: typeOfTrayIcon == TrayIconType.color,
+          isSettingToggled: true,
           settingTitle: 'Icon color',
           settingSubtitle: 'Choose between colored and monochrome icons.',
           showBottomBorder: true,
@@ -45,7 +45,7 @@ class MenuBarSettings extends ConsumerWidget {
                 AppOption(
                   callToAction: 'Color',
                   type: AppOptionType.right,
-                  isSelected: typeOfTrayIcon == TrayIconType.color,
+                  isSelected: typeOfTrayIcon != TrayIconType.monochrome,
                   // Setting isWindows to false because we always want to show the
                   // `.png` icon asset for the menu bar icon.
                   iconAsset:
@@ -84,6 +84,8 @@ class MenuBarSettings extends ConsumerWidget {
             },
             children: [
               AppDualOptionSwitch(
+                isBlocked:
+                    !ref.watch(trayIconTextSettingsProvider).showStatusOnTray,
                 options: [
                   AppOption(
                     callToAction: 'Left side',
