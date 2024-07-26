@@ -91,13 +91,9 @@ class TrayClickListener extends TrayListener {
               MenuItem(
                 label: 'Make it rain ${_ref.read(randomEmojiProvider).$1}',
                 onClick: (_) async {
-                  final currentWindowType =
-                      _ref.read(typeOfWindowProvider).typeOfWindow;
-                  if (currentWindowType == TypeOfWindow.emojiRain) {
-                    _ref.read(routerProvider).go(EmptyWindowPage.routePath);
-                    await Future.delayed(100.milliseconds);
-                  }
-                  _ref.read(typeOfWindowProvider.notifier).setEmojiRainWindow();
+                  _ref.read(routerProvider).go(EmptyWindowPage.routePath);
+                  await Future.delayed(100.milliseconds);
+                  _ref.read(routerProvider).go(EmojiRainPage.routePath);
                 },
               ),
               MenuItem(

@@ -37,7 +37,7 @@ class EmojiRainPage extends HookConsumerWidget {
         );
         return null;
       },
-      const [],
+      [key],
     );
 
     return const SizedBox.expand(
@@ -86,6 +86,9 @@ class EmojiRainOverlay extends StatefulWidget {
     BuildContext context,
     String emoji,
   ) async {
+    final navigator = Navigator.of(context, rootNavigator: true);
+    // Pop all possible dialogs
+    navigator.popUntil((route) => route is PageRoute);
     final overlay = Overlay.of(context);
     final completer = Completer<bool>();
 
@@ -103,7 +106,9 @@ class EmojiRainOverlay extends StatefulWidget {
         animationCompleted: completer,
         delay: Duration.zero,
         child: const SizedBox.expand(
-          child: ColoredBox(color: Colors.transparent),
+          child: ColoredBox(
+            color: Colors.transparent,
+          ),
         ),
       ),
     );
@@ -205,7 +210,7 @@ class _AnimatingEmoji extends StatelessWidget {
       top: emojiItem.topPosition,
       child: Transform.rotate(
         alignment: Alignment.bottomCenter,
-        angle: -pi / (getSign(index) * emojiItem.rotationMultiplier),
+        angle: -pi / (_getSign(index) * emojiItem.rotationMultiplier),
         child: Material(
           textStyle: TextStyle(
             fontSize: emojiItem.iconSize,
@@ -228,13 +233,13 @@ class _AnimatingEmoji extends StatelessWidget {
         )
         .slideX(
           begin: -0.5,
-          end: getSign(index) * 3,
+          end: _getSign(index) * 3,
           curve: Curves.easeIn,
           duration: emojiItem.duration,
         );
   }
 
-  int getSign(int index) => index.isEven ? -1 : 1;
+  int _getSign(int index) => index.isEven ? -1 : 1;
 }
 
 class AnimatedEmojiItem {

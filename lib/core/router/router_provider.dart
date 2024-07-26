@@ -58,9 +58,11 @@ final routerProvider = Provider.autoDispose<GoRouter>(
           name: EmojiRainPage.routeName,
           parentNavigatorKey: AppConstants.defaultNavigationKey,
           pageBuilder: (context, state) {
+            final now = DateTime.now();
+            final key = Key('${now.millisecondsSinceEpoch}');
             return CustomTransitionPage(
               name: EmojiRainPage.routeName,
-              child: const EmojiRainPage(),
+              child: EmojiRainPage(key: key),
               opaque: true,
               transitionDuration: const Duration(milliseconds: 0),
               reverseTransitionDuration: const Duration(milliseconds: 0),
