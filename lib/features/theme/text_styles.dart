@@ -2,8 +2,6 @@
 
 // import '../features.dart';
 
-// /// As specified in the [design system]
-// /// (https://www.figma.com/file/B1zYZ91atvlHnsXIj7pA8Z/Buzz?node-id=5981%3A97407&t=OKnxxJgLIg3UHP4e-4).
 // abstract class AppTextStyles {
 //   @visibleForTesting
 //   static const base = TextStyle(

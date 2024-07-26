@@ -97,7 +97,7 @@ Future<void> _handleNotificationsResize({
   await Future.microtask(() {});
 
   // Set initial notifications window size when the state changes.
-  // final notifications = ref.read(buzzNotificationsProvider);
+  // final notifications = ref.read(appNotificationsProvider);
   // await _setNotificationsWindowSize(ref: ref, notifications: notifications);
 
   // Listen to notifications updates to change the size as needed.
@@ -304,7 +304,7 @@ bool _isVisibleFrameSmallerThanDefaultSettingsWindow(Size visibleFrameSize) {
 
 // Future<void> _setNotificationsWindowSize({
 //   required Ref ref,
-//   required Set<BuzzNotification> notifications,
+//   required Set<AppNotification> notifications,
 // }) async {
 //   if (notifications.isEmpty) return;
 //   final windowManagementService = ref.read(windowManagementServiceProvider);
@@ -322,7 +322,7 @@ bool _isVisibleFrameSmallerThanDefaultSettingsWindow(Size visibleFrameSize) {
 //   );
 // }
 
-// extension on Set<BuzzNotification> {
+// extension on Set<AppNotification> {
 //   Size windowSize(bool isWindows) {
 //     // Height should be the sum of all the heights
 //     // of the notifications and vertical padding

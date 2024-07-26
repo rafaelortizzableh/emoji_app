@@ -20,7 +20,7 @@ class AppService {
 
   final Ref _ref;
 
-  /// Opens the Buzz application on the Home window.
+  /// Opens the Emoji application on the Home window.
   Future<void> openApp() async {
     try {
       final windowManagementService =
@@ -42,7 +42,7 @@ class AppService {
     }
   }
 
-  /// Hides (but not quits) the Buzz application.
+  /// Hides (but not quits) the EmojiApp application.
   void hideApp() {
     try {
       _ref.read(windowManagementServiceProvider).hideWindow();
@@ -55,7 +55,7 @@ class AppService {
     }
   }
 
-  /// Returns true if the Buzz application is visible.
+  /// Returns true if the EmojiApp application is visible.
   Future<bool> isAppVisible() async {
     try {
       return await _ref.read(windowManagementServiceProvider).isWindowVisible();
@@ -69,7 +69,7 @@ class AppService {
     }
   }
 
-  /// Quits the Buzz application.
+  /// Quits the EmojiApp application.
   void quitApp() {
     try {
       final isWindows = defaultTargetPlatform == TargetPlatform.windows;

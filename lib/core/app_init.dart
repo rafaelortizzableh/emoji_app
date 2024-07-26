@@ -4,7 +4,7 @@ import '../features/features.dart';
 import 'core.dart';
 
 /// A future that is loaded as an initialization step
-/// of the [BuzzBuzzerApp].
+/// of the [EmojiApp].
 ///
 /// When loading, the [AppInitialLoader] is shown.
 final initApplicationFuture = FutureProvider<void>(

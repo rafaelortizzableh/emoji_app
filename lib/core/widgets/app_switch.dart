@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../features/features.dart';
 
-/// https://www.figma.com/file/B1zYZ91atvlHnsXIj7pA8Z/Buzz?node-id=899%3A14630
 class AppSwitch extends StatelessWidget {
   const AppSwitch({
     super.key,
