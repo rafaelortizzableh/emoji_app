@@ -30,90 +30,101 @@ class HomePage extends HookConsumerWidget {
             systemOverlayStyle: SystemUiOverlayStyle.light,
             title: const Text('Random Emoji Generator'),
           ),
-          body: Center(
-            child: AnimatedSwitcher(
-              duration: kThemeAnimationDuration,
-              switchInCurve: Curves.easeInOut,
-              transitionBuilder: (child, animation) {
-                return ScaleTransition(
-                  scale: animation,
-                  child: FadeTransition(
-                    opacity: animation,
-                    child: child,
+          body: Stack(
+            children: [
+              Center(
+                child: AnimatedSwitcher(
+                  duration: kThemeAnimationDuration,
+                  switchInCurve: Curves.easeInOut,
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: animation,
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: SelectableText(
+                    key: ValueKey('emoji-$currentEmoji-$emojiSize'),
+                    currentEmoji,
+                    style: context.textTheme.headlineLarge?.copyWith(
+                      fontSize: emojiSize.toDouble(),
+                    ),
                   ),
-                );
-              },
-              child: SelectableText(
-                key: ValueKey('emoji-$currentEmoji-$emojiSize'),
-                currentEmoji,
-                style: context.textTheme.headlineLarge?.copyWith(
-                  fontSize: emojiSize.toDouble(),
                 ),
               ),
-            ),
-          ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton.small(
-                heroTag: const Key('new-emoji'),
-                onPressed: ref.read(randomEmojiProvider.notifier).updateEmoji,
-                tooltip: 'New Emoji',
-                child: const Icon(CupertinoIcons.refresh),
-              ),
-              const SizedBox(height: 12),
-              FloatingActionButton.small(
-                heroTag: const Key('emoji-rain'),
-                onPressed: () {
-                  if (AppConstants.isDesktopPlatform) {
-                    ref
-                        .read(typeOfWindowProvider.notifier)
-                        .setEmojiRainWindow();
-                    return;
-                  }
-                  EmojiRainOverlay.show(
-                    context,
-                    currentEmoji,
-                  );
-                },
-                tooltip: 'Emoji Rain',
-                child: const Icon(CupertinoIcons.drop_fill),
-              ),
-              const SizedBox(height: 12),
-              FloatingActionButton.small(
-                heroTag: const Key('copy-emoji'),
-                onPressed: () {
-                  final data = ClipboardData(text: currentEmoji);
-                  Clipboard.setData(data).ignore();
-                  final snackBar = SnackBar(
-                    duration: const Duration(seconds: 2),
-                    content: Text('Copied $currentEmoji to clipboard'),
-                    action: SnackBarAction(
-                      label: 'Dismiss',
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      },
+              Positioned(
+                right: 32,
+                bottom: 32,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton.small(
+                      heroTag: const Key('new-emoji'),
+                      onPressed:
+                          ref.read(randomEmojiProvider.notifier).updateEmoji,
+                      tooltip: 'New Emoji',
+                      child: const Icon(CupertinoIcons.refresh),
                     ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    snackBar,
-                  );
-                },
-                tooltip: 'Copy Emoji',
-                child: const Icon(Icons.copy),
-              ),
-              const SizedBox(height: 12),
-              FloatingActionButton.small(
-                heroTag: const Key('settings'),
-                onPressed: () {
-                  final goRouter = ref.read(routerProvider);
-                  goRouter.push(SettingsPage.routePath);
-                },
-                tooltip: 'Settings',
-                child: const Icon(CupertinoIcons.settings),
+                    const SizedBox(height: 12),
+                    FloatingActionButton.small(
+                      heroTag: const Key('emoji-rain'),
+                      onPressed: () {
+                        if (AppConstants.isDesktopPlatform) {
+                          ref
+                              .read(typeOfWindowProvider.notifier)
+                              .setEmojiRainWindow();
+                          return;
+                        }
+                        EmojiRainOverlay.show(
+                          context,
+                          ref,
+                          currentEmoji,
+                        );
+                      },
+                      tooltip: 'Emoji Rain',
+                      child: const Icon(CupertinoIcons.drop_fill),
+                    ),
+                    const SizedBox(height: 12),
+                    FloatingActionButton.small(
+                      heroTag: const Key('copy-emoji'),
+                      onPressed: () async {
+                        final data = ClipboardData(text: currentEmoji);
+                        final scaffoldMessengerState = ScaffoldMessenger.of(
+                          context,
+                        );
+                        await Clipboard.setData(data);
+                        final snackBar = SnackBar(
+                          duration: const Duration(seconds: 2),
+                          content: Text('Copied $currentEmoji to clipboard'),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed:
+                                scaffoldMessengerState.hideCurrentSnackBar,
+                          ),
+                        );
+                        scaffoldMessengerState.showSnackBar(snackBar);
+                      },
+                      tooltip: 'Copy Emoji',
+                      child: const Icon(Icons.copy),
+                    ),
+                    const SizedBox(height: 12),
+                    FloatingActionButton.small(
+                      heroTag: const Key('settings'),
+                      onPressed: () {
+                        final goRouter = ref.read(routerProvider);
+                        goRouter.push(SettingsPage.routePath);
+                      },
+                      tooltip: 'Settings',
+                      child: const Icon(CupertinoIcons.settings),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         ),
       ),
     );

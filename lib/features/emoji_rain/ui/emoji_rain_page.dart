@@ -11,6 +11,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/core.dart';
 import '../../features.dart';
 
+final _emojiOverlayProvider = StateProvider<OverlayEntry?>(
+  (ref) {
+    return null;
+  },
+);
+
 class EmojiRainPage extends HookConsumerWidget {
   const EmojiRainPage({
     super.key,
@@ -31,6 +37,7 @@ class EmojiRainPage extends HookConsumerWidget {
         }
         _showEmojiRain(
           context: context,
+          ref: ref,
           emoji: emoji,
           onHideApp: onHideApp,
           shouldHideAppAfterAnimation: AppConstants.isDesktopPlatform,
@@ -40,15 +47,23 @@ class EmojiRainPage extends HookConsumerWidget {
       [key],
     );
 
-    return const SizedBox.expand(
-      child: ColoredBox(
-        color: Colors.transparent,
+    return SizedBox.expand(
+      child: GestureDetector(
+        onTap: () {
+          ref.read(_emojiOverlayProvider.notifier).state?.remove();
+          ref.read(_emojiOverlayProvider.notifier).state = null;
+          ref.read(appServiceProvider).hideApp();
+        },
+        child: const ColoredBox(
+          color: Colors.transparent,
+        ),
       ),
     );
   }
 
   Future<void> _showEmojiRain({
     required BuildContext context,
+    required WidgetRef ref,
     required String emoji,
     required VoidCallback onHideApp,
     required bool shouldHideAppAfterAnimation,
@@ -58,6 +73,7 @@ class EmojiRainPage extends HookConsumerWidget {
       (_) async {
         await EmojiRainOverlay.show(
           context,
+          ref,
           emoji,
         );
         if (shouldHideAppAfterAnimation) {
@@ -84,8 +100,13 @@ class EmojiRainOverlay extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context,
+    WidgetRef ref,
     String emoji,
   ) async {
+    if (ref.read(_emojiOverlayProvider) != null) {
+      ref.read(_emojiOverlayProvider.notifier).state?.remove();
+    }
+
     final navigator = Navigator.of(context, rootNavigator: true);
     // Pop all possible dialogs
     navigator.popUntil((route) => route is PageRoute);
@@ -113,9 +134,12 @@ class EmojiRainOverlay extends StatefulWidget {
       ),
     );
 
+    ref.read(_emojiOverlayProvider.notifier).state = overlayEntry;
+
     overlay.insert(overlayEntry);
     if (await completer.future) {
-      overlayEntry.remove();
+      ref.read(_emojiOverlayProvider.notifier).state?.remove();
+      ref.read(_emojiOverlayProvider.notifier).state = null;
     }
   }
 
@@ -147,8 +171,7 @@ class _EmojiRainOverlayState extends State<EmojiRainOverlay> {
   }
 
   late final emojiItemsToAnimate = widget.emojiItemsToAnimate;
-  final ValueNotifier<List<int>> _animationsCompletedListener =
-      ValueNotifier([]);
+  final _animationsCompletedListener = ValueNotifier(<int>[]);
 
   @override
   Widget build(BuildContext context) {

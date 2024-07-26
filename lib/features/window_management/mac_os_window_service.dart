@@ -133,13 +133,13 @@ class MacOSWindowManagementService extends WindowManagementService {
 
   @override
   Future<void> showEmojiRainWindow() async {
-    setWindowVisibleOnAllWorkspaces(false);
+    setWindowVisibleOnAllWorkspaces(true);
     setWindowResizable(false);
     await toggleWindowButtonsVisibility(false);
 
     modifyVisibilitySettings(
-      hideOnOutsideClick: false,
-      isClosable: false,
+      hideOnOutsideClick: true,
+      isClosable: true,
       shouldRemainOnTop: true,
     );
     ref.read(typeOfWindowProvider.notifier).setEmojiRainWindow();

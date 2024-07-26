@@ -98,6 +98,17 @@ class CustomTheme {
           ),
         ),
       ),
+      snackBarTheme: const SnackBarThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+        behavior: SnackBarBehavior.floating,
+        actionTextColor: AppColors.white90transparency,
+        backgroundColor: AppColors.purple,
+        contentTextStyle: TextStyle(
+          color: AppColors.white90transparency,
+        ),
+      ),
     );
   }
 }
