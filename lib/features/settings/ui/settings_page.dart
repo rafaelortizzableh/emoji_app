@@ -28,7 +28,13 @@ class SettingsPage extends HookConsumerWidget {
           ),
           body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            children: const [MenuBarSettings()],
+            children: [
+              const EmojiSettings(),
+              if (AppConstants.isDesktopPlatform) ...[
+                const SizedBox(height: 20.0),
+                const MenuBarSettings(),
+              ],
+            ],
           ),
         ),
       ),

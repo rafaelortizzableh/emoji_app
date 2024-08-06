@@ -87,5 +87,5 @@ abstract class AppConstants {
   };
 
   static final isDesktopPlatform =
-      _validDesktopPlatform.contains(defaultTargetPlatform);
+      !kIsWeb && _validDesktopPlatform.contains(defaultTargetPlatform);
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:emoji_app/features/features.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/core.dart';
@@ -8,7 +9,7 @@ import '../../core/core.dart';
 final randomEmojiProvider =
     StateNotifierProvider.autoDispose<RandomEmojiNotifier, (String, int)>(
         (ref) {
-  return RandomEmojiNotifier();
+  return RandomEmojiNotifier(ref);
 });
 
 class RandomEmojiNotifier extends StateNotifier<(String, int)> {
@@ -17,9 +18,7 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
       return AppConstants.defaultAppDimensions;
     }
 
-    final physicalSize =
-        AppConstants.defaultNavigationKey.currentContext?.size ??
-            AppConstants.defaultAppDimensions;
+    final physicalSize = _initialSize;
 
     final minWidth = min(
       physicalSize.width,
@@ -32,9 +31,20 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
     return Size(minWidth, minHeight);
   }
 
-  RandomEmojiNotifier() : super(('🛡️', 32)) {
+  static Size get _initialSize {
+    try {
+      return AppConstants.defaultNavigationKey.currentContext?.size ??
+          AppConstants.defaultAppDimensions;
+    } catch (e) {
+      return AppConstants.defaultAppDimensions;
+    }
+  }
+
+  RandomEmojiNotifier(this.ref) : super(('🛡️', 32)) {
     updateEmoji();
   }
+
+  final Ref ref;
 
   void updateEmoji() {
     final newSize = _randomSize(_viewSize);
@@ -43,7 +53,9 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
   }
 
   String _randomEmoji([String? skip]) {
-    final emojiWithoutSkip = _emoji.where((e) => e != skip).toList();
+    final allEmoji = ref.read(allEmojiProvider);
+    final emoji = ref.read(emojiClassProvider)?.emoji ?? allEmoji;
+    final emojiWithoutSkip = emoji.where((e) => e != skip).toList();
     final emojiIndex = Random().nextInt(emojiWithoutSkip.length);
     return emojiWithoutSkip.where((e) => e != skip).elementAt(emojiIndex);
   }
@@ -53,55 +65,4 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
     final randomSize = Random().nextInt(size.width.toInt());
     return max(randomSize, 32);
   }
-
-  static const _emoji = [
-    '🤓',
-    '🤖',
-    '👾',
-    '👽',
-    '👻',
-    '🤠',
-    '🤡',
-    '🤥',
-    '🤤',
-    '🤢',
-    '🤧',
-    '⚾️',
-    '🏀',
-    '🏈',
-    '🎱',
-    '🎾',
-    '🏐',
-    '🏉',
-    '🎳',
-    '🏏',
-    '🏑',
-    '🏒',
-    '🥍',
-    '🏓',
-    '🏸',
-    '🥊',
-    '🥋',
-    '⚽️',
-    '🥝',
-    '🥑',
-    '🥒',
-    '🌶',
-    '🌽',
-    '🥕',
-    '🥔',
-    '🚀',
-    '🛸',
-    '🚁',
-    '🧬',
-    '🧪',
-    '🧫',
-    '🧯',
-    '🧴',
-    '🧷',
-    '🧹',
-    '🧺',
-    '🧻',
-    '🧼',
-  ];
 }

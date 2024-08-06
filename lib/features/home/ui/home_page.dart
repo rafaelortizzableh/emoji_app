@@ -17,6 +17,7 @@ class HomePage extends HookConsumerWidget {
     final currentEmojiAndSize = ref.watch(randomEmojiProvider);
     final currentEmoji = currentEmojiAndSize.$1;
     final emojiSize = currentEmojiAndSize.$2;
+    final selectedEmojiClass = ref.watch(emojiClassProvider);
 
     return AppWindowDecoration(
       backgroundColor: AppColors.backgroundColor.withOpacity(0.95),
@@ -51,6 +52,56 @@ class HomePage extends HookConsumerWidget {
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontSize: emojiSize.toDouble(),
                     ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: 30,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: EmojiClass.values.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 4),
+                    itemBuilder: (context, index) {
+                      final emojiClass = EmojiClass.values[index];
+                      return InkWell(
+                        onTap: () {
+                          HapticFeedback.mediumImpact().ignore();
+                          ref
+                              .read(emojiClassProvider.notifier)
+                              .setEmojiClass(emojiClass);
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: AnimatedContainer(
+                          duration: kThemeAnimationDuration,
+                          decoration: BoxDecoration(
+                            color: selectedEmojiClass == emojiClass
+                                ? AppColors.grey3
+                                : AppColors.grey2,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Center(
+                            child: Row(
+                              children: [
+                                const SizedBox(width: 8),
+                                Text(
+                                  emojiClass.emoji.first,
+                                  style: context.textTheme.headlineMedium,
+                                ),
+                                const SizedBox(width: 1),
+                                Text(
+                                  emojiClass.label,
+                                  style: context.textTheme.headlineMedium,
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
