@@ -3,11 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/core.dart';
 
-final editorialEmojiCategorySelectedProvider = StateProvider.autoDispose<bool>(
+final editorialEmojiCategorySelectedProvider = StateProvider<bool>(
   (ref) => false,
 );
 
-final editorialEmojiFutureProvider = FutureProvider.autoDispose<List<String>>(
+final editorialEmojiFutureProvider = FutureProvider<List<String>>(
   (ref) async {
     try {
       final dio = Dio();

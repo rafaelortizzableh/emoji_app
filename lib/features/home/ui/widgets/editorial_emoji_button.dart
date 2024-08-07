@@ -13,9 +13,7 @@ class EditorialEmojiButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(editorialEmojiCategorySelectedProvider);
-    if (isSelected) {
-      ref.watch(editorialEmojiFutureProvider);
-    }
+
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
@@ -30,6 +28,7 @@ class EditorialEmojiButton extends ConsumerWidget {
         HapticFeedback.heavyImpact().ignore();
         if (!isSelected) {
           ref.read(emojiClassProvider.notifier).clear();
+          ref.invalidate(editorialEmojiFutureProvider);
         }
         final event = isSelected
             ? 'editorial_emoji_unselected'

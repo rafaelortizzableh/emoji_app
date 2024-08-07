@@ -59,8 +59,8 @@ class HomePage extends HookConsumerWidget {
                 child: EmojiClassSelector(),
               ),
               Positioned(
-                right: 32,
-                bottom: 32,
+                right: context.width > 600 ? 32 : 16,
+                bottom: context.height > 600 ? 32 : 16,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

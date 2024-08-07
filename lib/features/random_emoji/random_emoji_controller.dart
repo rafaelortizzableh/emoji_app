@@ -22,11 +22,11 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
 
     final minWidth = min(
       physicalSize.width,
-      AppConstants.defaultAppDimensions.width,
+      AppConstants.defaultSettingsWindowDimensions.width,
     );
     final minHeight = min(
       physicalSize.height,
-      AppConstants.defaultAppDimensions.height,
+      AppConstants.defaultSettingsWindowDimensions.height,
     );
     return Size(minWidth, minHeight);
   }
@@ -66,6 +66,6 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
   int _randomSize(Size viewSize) {
     final size = viewSize / 3;
     final randomSize = Random().nextInt(size.width.toInt());
-    return max(randomSize, 32);
+    return max(randomSize, 80);
   }
 }
