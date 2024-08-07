@@ -75,10 +75,38 @@ abstract class AppConstants {
   /// The environment configuration for the app.
   static const configEnvironment = String.fromEnvironment('ENV');
 
+  /// The URL for the Terms and Conditions page.
+  static const termsAndConditionsUrl = String.fromEnvironment(
+    'TERMS_AND_CONDITIONS_URL',
+  );
+
+  /// The URL for the Privacy Policy page.
+  static const privacyPolicyUrl = String.fromEnvironment('PRIVACY_POLICY_URL');
+
+  /// The URL for the Source Code page.
+  static const sourceCodeUrl = String.fromEnvironment('SOURCE_CODE_URL');
+
+  /// The URL for the Author page.
+  static const authorUrl = String.fromEnvironment('AUTHOR_URL');
+
+  /// The URL for the Analytics endpoint.
+  static const analyticsEndPoint = String.fromEnvironment('ANALYTICS_ENDPOINT');
+
+  /// Editorial Emoji Endpoint
+  static const editorialEmojiEndpoint = String.fromEnvironment(
+    'EDITORIAL_EMOJI_ENDPOINT',
+  );
+
+  /// The name of the author of the app.
+  static const authorName = String.fromEnvironment('AUTHOR_NAME');
+
   // Default Border Radius for the Home Scaffold
+  static const _circularBorderRadius16 = Radius.circular(16.0);
   static const defaultBorderRadius = BorderRadius.only(
-    topLeft: Radius.circular(16.0),
-    topRight: Radius.circular(16.0),
+    topLeft: _circularBorderRadius16,
+    topRight: _circularBorderRadius16,
+    bottomLeft: _circularBorderRadius16,
+    bottomRight: _circularBorderRadius16,
   );
 
   static const _validDesktopPlatform = {

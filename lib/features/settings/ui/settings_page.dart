@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/core.dart';
 import '../../features.dart';
@@ -14,6 +15,7 @@ class SettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final width = context.width;
     return AppWindowDecoration(
       backgroundColor: AppColors.backgroundColor.withOpacity(0.95),
       child: AppShortcutsWrapper(
@@ -27,7 +29,10 @@ class SettingsPage extends HookConsumerWidget {
             automaticallyImplyLeading: !AppConstants.isDesktopPlatform,
           ),
           body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            padding: EdgeInsets.symmetric(
+              horizontal: (width) < 600 ? 16 : 32,
+              vertical: 16,
+            ),
             children: [
               const EmojiSettings(),
               if (AppConstants.isDesktopPlatform) ...[
@@ -36,6 +41,24 @@ class SettingsPage extends HookConsumerWidget {
               ],
             ],
           ),
+          persistentFooterButtons: [
+            const AboutThisAppButton(),
+            TextButton(
+              onPressed: () {
+                final analyticsService = ref.read(analyticsServiceProvider);
+                analyticsService.emitEvent('author_tapped', {});
+                const linkString = AppConstants.authorUrl;
+                final link = Uri.parse(linkString);
+                launchUrl(link);
+              },
+              child: Text(
+                'Made with ❤️ by ${AppConstants.authorName}',
+                style: TextStyle(
+                  color: context.theme.textTheme.bodyMedium?.color,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

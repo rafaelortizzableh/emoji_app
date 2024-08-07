@@ -55,8 +55,8 @@ abstract class WindowManagementService {
     // Logging Analytics event for window show.
     //
     // Logged when the app gets shown, not when it's hidden.
-    // TODO: Re-add analytics.
-    // ref.read(analyticsServiceProvider).logAppOpened();
+    // Debounce the event to avoid logging it multiple times.
+    ref.read(analyticsServiceProvider).emitEvent('app_opened', {});
   }
 
   /// Allows the user or the system to resize the window as needed.

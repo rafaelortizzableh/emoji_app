@@ -18,4 +18,8 @@ class EmojiClassController extends StateNotifier<EmojiClass?> {
     }
     state = emojiClass;
   }
+
+  void clear() {
+    state = null;
+  }
 }

@@ -17,7 +17,6 @@ class HomePage extends HookConsumerWidget {
     final currentEmojiAndSize = ref.watch(randomEmojiProvider);
     final currentEmoji = currentEmojiAndSize.$1;
     final emojiSize = currentEmojiAndSize.$2;
-    final selectedEmojiClass = ref.watch(emojiClassProvider);
 
     return AppWindowDecoration(
       backgroundColor: AppColors.backgroundColor.withOpacity(0.95),
@@ -55,55 +54,9 @@ class HomePage extends HookConsumerWidget {
                   ),
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.topCenter,
-                child: SizedBox(
-                  height: 30,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: EmojiClass.values.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 4),
-                    itemBuilder: (context, index) {
-                      final emojiClass = EmojiClass.values[index];
-                      return InkWell(
-                        onTap: () {
-                          HapticFeedback.mediumImpact().ignore();
-                          ref
-                              .read(emojiClassProvider.notifier)
-                              .setEmojiClass(emojiClass);
-                        },
-                        borderRadius: BorderRadius.circular(30),
-                        child: AnimatedContainer(
-                          duration: kThemeAnimationDuration,
-                          decoration: BoxDecoration(
-                            color: selectedEmojiClass == emojiClass
-                                ? AppColors.grey3
-                                : AppColors.grey2,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Center(
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  emojiClass.emoji.first,
-                                  style: context.textTheme.headlineMedium,
-                                ),
-                                const SizedBox(width: 1),
-                                Text(
-                                  emojiClass.label,
-                                  style: context.textTheme.headlineMedium,
-                                ),
-                                const SizedBox(width: 8),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                child: EmojiClassSelector(),
               ),
               Positioned(
                 right: 32,
@@ -113,8 +66,17 @@ class HomePage extends HookConsumerWidget {
                   children: [
                     FloatingActionButton.small(
                       heroTag: const Key('new-emoji'),
-                      onPressed:
-                          ref.read(randomEmojiProvider.notifier).updateEmoji,
+                      onPressed: () {
+                        ref.read(analyticsServiceProvider).emitEvent(
+                          'new_emoji_button_tapped',
+                          <String, dynamic>{
+                            'currentEmoji': currentEmoji,
+                            'location': HomePage.routeName,
+                          },
+                        );
+                        ref.read(randomEmojiProvider.notifier).updateEmoji();
+                        HapticFeedback.heavyImpact().ignore();
+                      },
                       tooltip: 'New Emoji',
                       child: const Icon(CupertinoIcons.refresh),
                     ),
@@ -122,6 +84,13 @@ class HomePage extends HookConsumerWidget {
                     FloatingActionButton.small(
                       heroTag: const Key('emoji-rain'),
                       onPressed: () {
+                        ref.read(analyticsServiceProvider).emitEvent(
+                          'emoji_rain_button_tapped',
+                          <String, dynamic>{
+                            'currentEmoji': currentEmoji,
+                            'location': HomePage.routeName,
+                          },
+                        );
                         if (AppConstants.isDesktopPlatform) {
                           ref
                               .read(typeOfWindowProvider.notifier)
@@ -141,6 +110,13 @@ class HomePage extends HookConsumerWidget {
                     FloatingActionButton.small(
                       heroTag: const Key('copy-emoji'),
                       onPressed: () async {
+                        ref.read(analyticsServiceProvider).emitEvent(
+                          'copy_emoji_button_tapped',
+                          <String, dynamic>{
+                            'currentEmoji': currentEmoji,
+                            'location': HomePage.routeName,
+                          },
+                        );
                         final data = ClipboardData(text: currentEmoji);
                         final scaffoldMessengerState = ScaffoldMessenger.of(
                           context,
@@ -164,6 +140,12 @@ class HomePage extends HookConsumerWidget {
                     FloatingActionButton.small(
                       heroTag: const Key('settings'),
                       onPressed: () {
+                        ref.read(analyticsServiceProvider).emitEvent(
+                          'settings_button_tapped',
+                          <String, dynamic>{
+                            'location': HomePage.routeName,
+                          },
+                        );
                         final goRouter = ref.read(routerProvider);
                         goRouter.push(SettingsPage.routePath);
                       },

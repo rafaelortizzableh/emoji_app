@@ -12,6 +12,7 @@ final initApplicationFuture = FutureProvider<void>(
 );
 
 Future<void> _initApplication(Ref ref) async {
+  ref.read(packageInfoProvider);
   if (!AppConstants.isDesktopPlatform) {
     return;
   }

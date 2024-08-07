@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
   
 dependencies:
   flutter:
@@ -28,6 +28,10 @@ dependencies:
   flutter_animate: ^4.5.0
   go_router: ^14.2.0
   collection: ^1.18.0
+  dio: ^5.5.0+1
+  nanoid2: ^2.0.1
+  url_launcher: ^6.3.0
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -46,3 +50,4 @@ flutter:
 
   assets:
     - assets/menu_icon/
+    - assets/app_icon.png

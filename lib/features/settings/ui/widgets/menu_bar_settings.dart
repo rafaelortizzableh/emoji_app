@@ -18,7 +18,7 @@ class MenuBarSettings extends ConsumerWidget {
       children: [
         Text(
           'Icon Settings',
-          style: context.textTheme.bodyMedium?.copyWith(
+          style: context.textTheme.titleMedium?.copyWith(
             color: AppColors.white90transparency,
           ),
         ),
@@ -62,6 +62,12 @@ class MenuBarSettings extends ConsumerWidget {
             ),
           ],
           onSettingToggled: (toggled) {
+            ref.read(analyticsServiceProvider).emitEvent(
+              'menu_bar_icon_style_changed',
+              <String, dynamic>{
+                'menu_bar_icon_style': toggled ? 'color' : 'monochrome',
+              },
+            );
             ref.read(trayIconTypeProvider.notifier).updateTypeOfIcon(
                   toggled ? TrayIconType.color : TrayIconType.monochrome,
                 );
@@ -78,6 +84,13 @@ class MenuBarSettings extends ConsumerWidget {
             showBottomBorder: true,
             showTopBorder: true,
             onSettingToggled: (toggled) {
+              // Analytics
+              ref.read(analyticsServiceProvider).emitEvent(
+                'status_on_tray_toggled',
+                <String, dynamic>{
+                  'status_on_tray': toggled,
+                },
+              );
               ref
                   .read(trayIconTextSettingsProvider.notifier)
                   .toggleStatusShownOnTray(toggled);
@@ -105,6 +118,14 @@ class MenuBarSettings extends ConsumerWidget {
                 onOptionPressed: (option) {
                   final isStatusOnRightSide =
                       option.type == AppOptionType.right;
+
+                  ref.read(analyticsServiceProvider).emitEvent(
+                    'status_on_tray_position_changed',
+                    <String, dynamic>{
+                      'status_on_tray_position':
+                          isStatusOnRightSide ? 'right' : 'left',
+                    },
+                  );
                   ref
                       .read(trayIconTextSettingsProvider.notifier)
                       .changeStatusPosition(

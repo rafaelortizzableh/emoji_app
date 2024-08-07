@@ -54,7 +54,10 @@ class RandomEmojiNotifier extends StateNotifier<(String, int)> {
 
   String _randomEmoji([String? skip]) {
     final allEmoji = ref.read(allEmojiProvider);
-    final emoji = ref.read(emojiClassProvider)?.emoji ?? allEmoji;
+    var emoji = ref.read(emojiClassProvider)?.emoji ?? allEmoji;
+    if (ref.read(editorialEmojiCategorySelectedProvider)) {
+      emoji = ref.read(editorialEmojiFutureProvider).asData?.value ?? emoji;
+    }
     final emojiWithoutSkip = emoji.where((e) => e != skip).toList();
     final emojiIndex = Random().nextInt(emojiWithoutSkip.length);
     return emojiWithoutSkip.where((e) => e != skip).elementAt(emojiIndex);

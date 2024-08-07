@@ -51,27 +51,22 @@ class TrayClickListener extends TrayListener {
   @override
   void onTrayIconRightMouseDown() async {
     final year = DateTime.now().year;
-    // final l10n = defaultNavigationKey.currentContext?.l10n;
 
     await _ref.read(trayManagerProvider).setContextMenu(
           Menu(
             items: [
               MenuItem.submenu(
-                label:
-                    // l10n?.aboutMenuItemTitle ??
-                    'About',
+                label: 'About',
                 submenu: Menu(
                   items: [
                     MenuItem(
                       label:
-                          // l10n?.versionSubmenuItemTitle(packageInfo.version) ??
-                          //     'Version: ${packageInfo.version}',
-                          'Version: 1.0.0',
+                          'Version: ${_ref.read(packageInfoProvider)?.version ?? '1.0.0'}',
                       disabled: true,
                     ),
                     MenuItem.separator(),
                     MenuItem(
-                      label: 'Emoji App | $year',
+                      label: '${AppConstants.authorName} | $year',
                     ),
                   ],
                 ),
@@ -81,6 +76,12 @@ class TrayClickListener extends TrayListener {
                 onClick: (_) async {
                   final currentWindowType =
                       _ref.read(typeOfWindowProvider).typeOfWindow;
+                  _ref.read(analyticsServiceProvider).emitEvent(
+                    'settings_button_tapped',
+                    <String, dynamic>{
+                      'location': 'Menu Bar Item',
+                    },
+                  );
                   if (currentWindowType == TypeOfWindow.settings) {
                     _ref.read(routerProvider).go(EmptyWindowPage.routePath);
                     await Future.microtask(() {});
@@ -91,6 +92,13 @@ class TrayClickListener extends TrayListener {
               MenuItem(
                 label: 'Make it rain ${_ref.read(randomEmojiProvider).$1}',
                 onClick: (_) async {
+                  _ref.read(analyticsServiceProvider).emitEvent(
+                    'emoji_rain_button_tapped',
+                    <String, dynamic>{
+                      'currentEmoji': _ref.read(randomEmojiProvider).$1,
+                      'location': 'Menu Bar Item',
+                    },
+                  );
                   _ref.read(routerProvider).go(EmptyWindowPage.routePath);
                   await Future.delayed(100.milliseconds);
                   _ref.read(routerProvider).go(EmojiRainPage.routePath);
@@ -99,6 +107,13 @@ class TrayClickListener extends TrayListener {
               MenuItem(
                 label: 'New Random Emoji',
                 onClick: (_) async {
+                  _ref.read(analyticsServiceProvider).emitEvent(
+                    'new_emoji_button_tapped',
+                    <String, dynamic>{
+                      'currentEmoji': _ref.read(randomEmojiProvider).$1,
+                      'location': 'Menu Bar Item',
+                    },
+                  );
                   _ref.read(randomEmojiProvider.notifier).updateEmoji();
                 },
               ),

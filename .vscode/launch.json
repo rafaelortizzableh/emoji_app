@@ -1,13 +1,19 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "emoji_app",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define=ANALYTICS_ENDPOINT=https://rafaelortizzableh-emojiappanalyticseventendpoint.web.val.run",
+                "--dart-define=EDITORIAL_EMOJI_ENDPOINT=https://rafaelortizzableh-emojiappeditorial.web.val.run",
+                "--dart-define=PRIVACY_POLICY_URL=https://rafaelortizzableh-emojiappeprivacy.web.val.run",
+                "--dart-define=TERMS_OF_SERVICE_URL=https://rafaelortizzableh-emojiappterms.web.val.run",
+                "--dart-define=AUTHOR_NAME=Rafa Ortiz",
+                "--dart-define=AUTHOR_URL=https://portfolio-roz.web.app",
+                "--dart-define=SOURCE_CODE_URL=https://github.com/rafaelortizzableh/emoji_app",      
+            ]
         },
         {
             "name": "emoji_app (profile mode)",
@@ -17,26 +23,6 @@
         },
         {
             "name": "emoji_app (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "window_manager",
-            "cwd": "packages/window_manager",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "window_manager (profile mode)",
-            "cwd": "packages/window_manager",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "window_manager (release mode)",
-            "cwd": "packages/window_manager",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

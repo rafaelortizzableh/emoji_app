@@ -25,18 +25,14 @@ class AppSwitch extends StatelessWidget {
         fit: StackFit.passthrough,
         alignment: isToggled ? Alignment.centerRight : Alignment.centerLeft,
         children: [
-          SizedBox(
-            width: 37,
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: CupertinoSwitch(
-                value: isToggled,
-                onChanged: !isBlocked ? onChanged : null,
-                thumbColor: AppColors.grey6,
-                activeColor: AppColors.purple,
-                trackColor: AppColors.grey3,
-              ),
+          FittedBox(
+            fit: BoxFit.contain,
+            child: CupertinoSwitch(
+              value: isToggled,
+              onChanged: !isBlocked ? onChanged : null,
+              thumbColor: AppColors.grey6,
+              activeColor: AppColors.purple,
+              trackColor: AppColors.grey3,
             ),
           ),
           if (!isBlocked && onChanged != null)

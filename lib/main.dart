@@ -2,6 +2,7 @@ import 'package:emoji_app/app.dart';
 import 'package:emoji_app/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -15,6 +16,7 @@ void main() async {
     if (AppConstants.isDesktopPlatform) ...{
       WindowManager.instance.ensureInitialized(),
     },
+    PackageInfo.fromPlatform(),
   });
   final sharedPreferences = appInit.first as SharedPreferences;
 

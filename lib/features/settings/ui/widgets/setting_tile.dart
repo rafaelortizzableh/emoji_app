@@ -76,12 +76,12 @@ class SettingTile extends StatelessWidget {
                     children: [
                       Text(
                         settingTitle,
-                        style: context.textTheme.bodySmall,
+                        style: context.textTheme.bodyLarge,
                       ),
                       if (settingSubtitle != null)
                         Text(
                           settingSubtitle!,
-                          style: context.textTheme.bodySmall?.copyWith(
+                          style: context.textTheme.bodyMedium?.copyWith(
                             color: AppColors.white50transparency,
                           ),
                         ),
@@ -95,6 +95,7 @@ class SettingTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               if (showOnOffSwitch) ...[
+                const SizedBox(width: 16.0),
                 AppSwitch(
                   isBlocked: isSettingBlocked,
                   isToggled: isSettingToggled ?? false,

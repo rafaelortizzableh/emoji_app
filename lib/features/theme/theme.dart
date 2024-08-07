@@ -5,7 +5,6 @@ import 'colors.dart';
 import 'theme_fonts.dart';
 
 export 'colors.dart';
-export 'text_styles.dart';
 export 'theme_fonts.dart';
 
 class CustomTheme {
@@ -36,6 +35,11 @@ class CustomTheme {
         bodyLarge: theme.textTheme.bodyLarge?.copyWith(
           fontFamily: ThemeFonts.inter,
           fontWeight: FontWeight.w400,
+        ),
+        bodyMedium: theme.textTheme.bodyMedium?.copyWith(
+          fontFamily: ThemeFonts.inter,
+          fontWeight: FontWeight.w400,
+          fontSize: 15.0,
         ),
         displayLarge: theme.textTheme.displayLarge?.copyWith(
           fontFamily: ThemeFonts.inter,

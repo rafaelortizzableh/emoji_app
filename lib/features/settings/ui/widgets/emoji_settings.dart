@@ -24,7 +24,7 @@ class EmojiSettings extends ConsumerWidget {
       children: [
         Text(
           'Emoji Settings',
-          style: context.textTheme.bodyMedium?.copyWith(
+          style: context.textTheme.titleMedium?.copyWith(
             color: AppColors.white90transparency,
           ),
         ),
@@ -38,6 +38,12 @@ class EmojiSettings extends ConsumerWidget {
           showBottomBorder: true,
           showTopBorder: true,
           onSettingToggled: (toggled) {
+            ref.read(analyticsServiceProvider).emitEvent(
+              'new_emoji_on_random_setting_toggled',
+              <String, dynamic>{
+                'new_emoji_setting': toggled,
+              },
+            );
             ref.read(shouldIncludeNewEmojiProvider.notifier).updateValue(
                   toggled,
                 );
@@ -52,6 +58,12 @@ class EmojiSettings extends ConsumerWidget {
           showBottomBorder: true,
           showTopBorder: true,
           onSettingToggled: (toggled) {
+            ref.read(analyticsServiceProvider).emitEvent(
+              'flag_emoji_on_random_setting_toggled',
+              <String, dynamic>{
+                'flag_emoji_setting': toggled,
+              },
+            );
             ref.read(shouldIncludeFlagEmojiProvider.notifier).updateValue(
                   toggled,
                 );
