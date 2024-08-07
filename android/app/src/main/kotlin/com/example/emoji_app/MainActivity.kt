@@ -1,4 +1,4 @@
-package com.example.emoji_app
+package es.redmars.emojiapp
 
 import io.flutter.embedding.android.FlutterActivity
 
