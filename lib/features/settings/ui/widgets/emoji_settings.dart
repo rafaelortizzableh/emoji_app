@@ -52,7 +52,7 @@ class EmojiSettings extends ConsumerWidget {
         SettingTile(
           showOnOffSwitch: true,
           isSettingToggled: shouldIncludeFlagEmoji,
-          settingTitle: '${flagEmoji.first} • Flag emoji in random generator',
+          settingTitle: '${flagEmoji.first} -> Flag emoji in random generator',
           settingSubtitle:
               'Whether the random emoji generator should include flag emoji when no category is selected.',
           showBottomBorder: true,
