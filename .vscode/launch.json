@@ -8,11 +8,11 @@
             "args": [
                 "--dart-define=ANALYTICS_ENDPOINT=https://rafaelortizzableh-emojiappanalyticseventendpoint.web.val.run",
                 "--dart-define=EDITORIAL_EMOJI_ENDPOINT=https://rafaelortizzableh-emojiappeditorial.web.val.run",
-                "--dart-define=PRIVACY_POLICY_URL=https://rafaelortizzableh-emojiappeprivacy.web.val.run",
-                "--dart-define=TERMS_OF_SERVICE_URL=https://rafaelortizzableh-emojiappterms.web.val.run",
+                "--dart-define=PRIVACY_POLICY_URL=https://rafaelortizzableh-emojiappprivacy.web.val.run",
+                "--dart-define=TERMS_AND_CONDITIONS_URL=https://rafaelortizzableh-emojiappterms.web.val.run",
                 "--dart-define=AUTHOR_NAME=Rafa Ortiz",
                 "--dart-define=AUTHOR_URL=https://portfolio-roz.web.app",
-                "--dart-define=SOURCE_CODE_URL=https://github.com/rafaelortizzableh/emoji_app",      
+                "--dart-define=SOURCE_CODE_URL=https://github.com/rafaelortizzableh/emoji_app",
             ]
         },
         {
