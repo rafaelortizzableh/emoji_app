@@ -10,7 +10,13 @@ final analyticsServiceProvider = Provider.autoDispose<AnalyticsService>(
     if (kDebugMode) {
       return _DebugAnalyticsService();
     }
-    return _DeadSimpleAnalyticsService(ref.watch(_deadSimpleAnalyticsProvider));
+    final os = kIsWeb
+        ? '${defaultTargetPlatform.name}-web'
+        : defaultTargetPlatform.name;
+    return _DeadSimpleAnalyticsService(
+      ref.watch(_deadSimpleAnalyticsProvider),
+      os,
+    );
   },
 );
 
@@ -38,8 +44,12 @@ class _DebugAnalyticsService implements AnalyticsService {
 
 class _DeadSimpleAnalyticsService implements AnalyticsService {
   final DeadSimpleAnalytics _deadSimpleAnalytics;
+  final String _os;
 
-  _DeadSimpleAnalyticsService(this._deadSimpleAnalytics);
+  _DeadSimpleAnalyticsService(
+    this._deadSimpleAnalytics,
+    this._os,
+  );
 
   final _eventDebouncer = <String, DateTime>{};
 
@@ -65,7 +75,7 @@ class _DeadSimpleAnalyticsService implements AnalyticsService {
     try {
       await _deadSimpleAnalytics.capture(
         eventName,
-        properties: eventProperties,
+        properties: {...eventProperties, 'OS': _os},
         timestamp: timestamp,
       );
     } catch (e) {
