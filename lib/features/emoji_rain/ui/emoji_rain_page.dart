@@ -103,14 +103,16 @@ class EmojiRainOverlay extends StatefulWidget {
     WidgetRef ref,
     String emoji,
   ) async {
-    if (ref.read(_emojiOverlayProvider) != null) {
+    final overlay = Overlay.of(context);
+    final isBeingShown = ref.read(_emojiOverlayProvider) != null;
+    if (isBeingShown) {
       ref.read(_emojiOverlayProvider.notifier).state?.remove();
     }
 
     final navigator = Navigator.of(context, rootNavigator: true);
     // Pop all possible dialogs
     navigator.popUntil((route) => route is PageRoute);
-    final overlay = Overlay.of(context);
+
     final completer = Completer<bool>();
 
     final emojiList = _generateEmojiItems(
@@ -118,11 +120,13 @@ class EmojiRainOverlay extends StatefulWidget {
       width: MediaQuery.sizeOf(context).width,
     );
 
+    final key = AppConstants.isDesktopPlatform
+        ? Key('emoji_rain_overlay_${DateTime.now().millisecondsSinceEpoch}')
+        : null;
+
     final overlayEntry = OverlayEntry(
       builder: (_) => EmojiRainOverlay(
-        key: Key(
-          'emoji_rain_overlay_${DateTime.now().millisecondsSinceEpoch}',
-        ),
+        key: key,
         emojiItemsToAnimate: emojiList,
         animationCompleted: completer,
         delay: Duration.zero,
