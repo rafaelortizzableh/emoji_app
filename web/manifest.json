@@ -1,6 +1,6 @@
 {
-    "name": "emoji_app",
-    "short_name": "emoji_app",
+    "name": "Random Emoji",
+    "short_name": "Random Emoji",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#15161B",
