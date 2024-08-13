@@ -33,25 +33,9 @@ class HomePage extends HookConsumerWidget {
           body: Stack(
             children: [
               Center(
-                child: AnimatedSwitcher(
-                  duration: kThemeAnimationDuration,
-                  switchInCurve: Curves.easeInOut,
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: animation,
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: SelectableText(
-                    key: ValueKey('emoji-$currentEmoji-$emojiSize'),
-                    currentEmoji,
-                    style: context.textTheme.headlineLarge?.copyWith(
-                      fontSize: emojiSize.toDouble(),
-                    ),
-                  ),
+                child: MainEmojiItem(
+                  currentEmoji: currentEmoji,
+                  emojiSize: emojiSize.toDouble(),
                 ),
               ),
               const Align(
