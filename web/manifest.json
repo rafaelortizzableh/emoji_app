@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#15161B",
     "theme_color": "#6A52FF",
-    "description": "A new Flutter project.",
+    "description": "Generate random emoji",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
