@@ -1,7 +1,7 @@
 name: emoji_app
 description: "Generate and copy emojis to clipboard."
 publish_to: 'none' 
-version: 1.0.0+2
+version: 1.0.0+4
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -13,9 +13,8 @@ dependencies:
     sdk: flutter
 
   window_manager:
-    git: https://github.com/joinbuzz/window_manager
-  tray_manager:
-    git: https://github.com/joinbuzz/tray_manager
+    git: https://github.com/rafaelortizzableh/window_manager
+  tray_manager: ^0.3.0
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git

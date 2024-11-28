@@ -549,12 +549,11 @@ packages:
   tray_manager:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "0b4d92d892d05675970fe6ca9899fbf02b02011b"
-      url: "https://github.com/joinbuzz/tray_manager"
-    source: git
-    version: "0.2.0"
+      name: tray_manager
+      sha256: "3c03c70a9b14e89b17c15275c05f67fdd30950f3073ae523755ad9beb2ac7e35"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   typed_data:
     dependency: transitive
     description:
@@ -639,10 +638,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
+      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.4"
+    version: "14.2.5"
   web:
     dependency: transitive
     description:
@@ -665,7 +664,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "13a650b180af6da7745d7a02e6eafefff1a873e1"
-      url: "https://github.com/joinbuzz/window_manager"
+      url: "https://github.com/rafaelortizzableh/window_manager"
     source: git
     version: "0.3.4"
   window_size:

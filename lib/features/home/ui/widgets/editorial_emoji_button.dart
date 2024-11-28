@@ -28,8 +28,11 @@ class EditorialEmojiButton extends ConsumerWidget {
         HapticFeedback.heavyImpact().ignore();
         if (!isSelected) {
           ref.read(emojiClassProvider.notifier).clear();
+        } else {
           ref.invalidate(editorialEmojiFutureProvider);
+          ref.read(editorialEmojiFutureProvider);
         }
+
         final event = isSelected
             ? 'editorial_emoji_unselected'
             : 'editorial_emoji_selected';

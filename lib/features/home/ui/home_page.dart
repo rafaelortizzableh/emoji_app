@@ -12,6 +12,8 @@ class HomePage extends HookConsumerWidget {
   static const routePath = '/';
   static const routeName = 'Home';
 
+  static final _optionsMenuKey = GlobalKey();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentEmojiAndSize = ref.watch(randomEmojiProvider);
@@ -29,6 +31,64 @@ class HomePage extends HookConsumerWidget {
           appBar: AppBar(
             systemOverlayStyle: SystemUiOverlayStyle.light,
             title: const Text('Random Emoji Generator'),
+            actions: [
+              if (AppConstants.isDesktopPlatform) ...[
+                IconButton(
+                  key: _optionsMenuKey,
+                  tooltip: 'Options',
+                  onPressed: () {
+                    final position = _optionsMenuKey.currentContext
+                        ?.findRenderObject() as RenderBox?;
+                    if (position == null) {
+                      return;
+                    }
+                    showMenu(
+                      context: context,
+                      position: RelativeRect.fromLTRB(
+                        position.localToGlobal(Offset.zero).dx,
+                        position.localToGlobal(Offset.zero).dy,
+                        position.localToGlobal(Offset.zero).dx,
+                        position.localToGlobal(Offset.zero).dy,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      items: [
+                        PopupMenuItem(
+                          value: 'hide',
+                          child: const Text('Hide'),
+                          onTap: () {
+                            ref.read(analyticsServiceProvider).emitEvent(
+                              'hide_button_tapped',
+                              <String, dynamic>{
+                                'currentEmoji': currentEmoji,
+                                'location': HomePage.routeName,
+                              },
+                            );
+                            ref.read(appServiceProvider).hideApp();
+                          },
+                        ),
+                        PopupMenuItem(
+                          value: 'quit',
+                          child: const Text('Quit'),
+                          onTap: () {
+                            ref.read(analyticsServiceProvider).emitEvent(
+                              'quit_button_tapped',
+                              <String, dynamic>{
+                                'currentEmoji': currentEmoji,
+                                'location': HomePage.routeName,
+                              },
+                            );
+                            ref.read(appServiceProvider).quitApp();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  icon: const Icon(CupertinoIcons.ellipsis_vertical),
+                ),
+              ],
+            ],
           ),
           body: Stack(
             children: [
