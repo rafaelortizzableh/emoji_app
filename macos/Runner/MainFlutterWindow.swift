@@ -2,7 +2,7 @@ import Cocoa
 import FlutterMacOS
 import window_manager
 
-class MainFlutterWindow: NSWindow {
+class MainFlutterWindow: NSPanel {
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController.init()
     let windowFrame = self.frame
@@ -37,3 +37,5 @@ class MainFlutterWindow: NSWindow {
     hiddenWindowAtLaunch()
   }
 }
+
+
