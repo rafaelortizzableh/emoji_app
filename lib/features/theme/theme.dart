@@ -72,14 +72,14 @@ class CustomTheme {
         trackColor: WidgetStateProperty.resolveWith<Color>(
           (states) {
             if (states.contains(WidgetState.disabled)) {
-              return AppColors.grey6.withOpacity(0.5);
+              return AppColors.grey6.withValues(alpha: 0.5);
             }
 
             if (states.contains(WidgetState.selected)) {
               return AppColors.purple;
             }
 
-            return AppColors.grey6.withOpacity(0.5);
+            return AppColors.grey6.withValues(alpha: 0.5);
           },
         ),
         thumbColor: WidgetStateProperty.resolveWith<Color>(

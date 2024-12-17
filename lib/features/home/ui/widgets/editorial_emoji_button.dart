@@ -17,7 +17,7 @@ class EditorialEmojiButton extends ConsumerWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: getBackgroundColor(
+        backgroundColor: _getBackgroundColor(
           isSelected: isSelected,
         ),
         padding: AppConstants.isDesktopPlatform
@@ -57,12 +57,29 @@ class EditorialEmojiButton extends ConsumerWidget {
     );
   }
 
-  Color? getBackgroundColor({
+  Color? _getBackgroundColor({
+    required bool isSelected,
+  }) {
+    if (AppConstants.isDesktopPlatform) {
+      return _getDesktopBackgroundColor(
+        isSelected: isSelected,
+      );
+    }
+
+    if (isSelected) {
+      return Colors.indigo;
+    }
+
+    return Colors.indigo.withValues(alpha: 0.33);
+  }
+
+  Color? _getDesktopBackgroundColor({
     required bool isSelected,
   }) {
     if (isSelected) {
       return Colors.indigo;
     }
-    return Colors.indigo.withOpacity(0.33);
+
+    return AppColors.backgroundColor.withValues(alpha: 0.9);
   }
 }

@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
+        "borderless",
         "Debouncer",
         "Lukehog",
-        "prefs"
+        "prefs",
+        "titlebar"
     ],
     "dart.flutterSdkPath": "~/fvm/versions/stable"
 }

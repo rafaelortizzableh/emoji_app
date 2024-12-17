@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/core.dart';
 import '../../features.dart';
 
-class WindowListenersWrapper extends HookConsumerWidget {
+class WindowListenersWrapper extends ConsumerWidget {
   const WindowListenersWrapper({
     required this.child,
     super.key,

@@ -8,8 +8,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/core.dart';
-import '../../features.dart';
+import '../../../../core/core.dart';
+import '../../../features.dart';
 
 final _emojiOverlayProvider = StateProvider<OverlayEntry?>(
   (ref) {
@@ -152,9 +152,34 @@ class EmojiRainOverlay extends StatefulWidget {
 }
 
 class _EmojiRainOverlayState extends State<EmojiRainOverlay> {
+  List<Widget> _children = [];
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final children = emojiItemsToAnimate
+          .mapIndexed(
+            (index, item) => _AnimatingEmoji(
+              emojiItem: item,
+              index: index,
+              key: ValueKey('_emoji_widget_${index}_$item'),
+              animationCompleted: (isCompleted) {
+                if (!isCompleted) return;
+
+                _animationsCompletedListener.value = [
+                  ..._animationsCompletedListener.value,
+                  index,
+                ];
+              },
+            ),
+          )
+          .toList();
+
+      setState(() {
+        _children = children;
+      });
+    });
     Future.delayed(widget.delay, _startAnimation);
     _animationsCompletedListener.addListener(() {
       if (_animationsCompletedListener.value.length ==
@@ -185,23 +210,7 @@ class _EmojiRainOverlayState extends State<EmojiRainOverlay> {
           widget.child,
           Stack(
             clipBehavior: Clip.none,
-            children: [
-              ...emojiItemsToAnimate.mapIndexed(
-                (index, item) => _AnimatingEmoji(
-                  emojiItem: item,
-                  index: index,
-                  key: ValueKey('_emoji_widget_${index}_$item'),
-                  animationCompleted: (isCompleted) {
-                    if (!isCompleted) return;
-
-                    _animationsCompletedListener.value = [
-                      ..._animationsCompletedListener.value,
-                      index,
-                    ];
-                  },
-                ),
-              ),
-            ],
+            children: _children,
           )
               .animate(
                 onComplete: (_) => widget.animationCompleted.complete(true),

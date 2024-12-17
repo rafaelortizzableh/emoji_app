@@ -1,4 +1,4 @@
-export 'emoji_rain/emoji_rain.dart';
+export 'emoji_animations/emoji_animations.dart';
 export 'home/home.dart';
 export 'random_emoji/random_emoji.dart';
 export 'settings/settings.dart';

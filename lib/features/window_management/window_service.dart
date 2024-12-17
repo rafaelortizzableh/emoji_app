@@ -61,7 +61,7 @@ abstract class WindowManagementService {
 
   /// Allows the user or the system to resize the window as needed.
   ///
-  /// Needed to allow maximazing the settings window.
+  /// Needed to allow maximizing the settings window.
   void setWindowResizable(bool isResizable) {
     ref.read(windowManagerProvider).setResizable(isResizable);
   }

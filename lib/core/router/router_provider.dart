@@ -90,31 +90,18 @@ final routerProvider = Provider.autoDispose<GoRouter>(
             return CustomTransitionPage(
               name: SettingsPage.routeName,
               child: const SettingsPage(),
-              transitionDuration: const Duration(milliseconds: 300),
-              reverseTransitionDuration: const Duration(milliseconds: 50),
-              transitionsBuilder: (
-                context,
-                animation,
-                reverseAnimation,
-                child,
-              ) {
+              transitionDuration: const Duration(milliseconds: 250),
+              reverseTransitionDuration: const Duration(milliseconds: 10),
+              transitionsBuilder:
+                  (context, animation, reverseAnimation, child) {
                 return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.5, -0.5),
-                    end: Offset.zero,
-                  ).chain(CurveTween(curve: Curves.easeOut)).animate(animation),
-                  child: ScaleTransition(
-                    scale: Tween<double>(
-                      begin: 0.5,
-                      end: 1,
-                    )
-                        .chain(CurveTween(curve: Curves.easeOut))
-                        .animate(animation),
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    ),
+                  position: animation.drive(
+                    Tween<Offset>(
+                      begin: const Offset(0.5, -0.5),
+                      end: Offset.zero,
+                    ).chain(CurveTween(curve: Curves.easeOut)),
                   ),
+                  child: child,
                 );
               },
             );

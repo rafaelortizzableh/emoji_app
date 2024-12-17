@@ -31,8 +31,8 @@ class AppSwitch extends StatelessWidget {
               value: isToggled,
               onChanged: !isBlocked ? onChanged : null,
               thumbColor: AppColors.grey6,
-              activeColor: AppColors.purple,
-              trackColor: AppColors.grey3,
+              activeTrackColor: AppColors.purple,
+              inactiveTrackColor: AppColors.grey3,
             ),
           ),
           if (!isBlocked && onChanged != null)
@@ -92,7 +92,7 @@ class _ToggleHoverState extends State<_ToggleHover> {
   Color get _hoverColor {
     if (!_hovered) return Colors.transparent;
     return widget.isToggled
-        ? AppColors.lightPurple.withOpacity(_hoveredOpacity)
-        : AppColors.grey6.withOpacity(_hoveredOpacity);
+        ? AppColors.lightPurple.withValues(alpha: _hoveredOpacity)
+        : AppColors.grey6.withValues(alpha: _hoveredOpacity);
   }
 }

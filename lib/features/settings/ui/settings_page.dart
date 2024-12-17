@@ -17,7 +17,7 @@ class SettingsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final width = context.width;
     return AppWindowDecoration(
-      backgroundColor: AppColors.backgroundColor.withOpacity(0.95),
+      backgroundColor: AppColors.backgroundColor.withValues(alpha: 0.95),
       child: AppShortcutsWrapper(
         withHideOrQuitAppShortcuts: true,
         withOpenSettingsShortcut: false,

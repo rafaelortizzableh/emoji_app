@@ -117,7 +117,7 @@ class AppShortcutsWrapper extends ConsumerWidget {
   // void _switchTab({
   //   required BuildContext context,
   //   Tab? tab,
-  //   NavigateListHorizonalDirection? direction,
+  //   NavigateListHorizontalDirection? direction,
   // }) {
   //   final tabController = DefaultTabController.of(context);
   //   final homeTab = _homeTabFromTab[tab] ?? _homeTabFromDirection[direction];

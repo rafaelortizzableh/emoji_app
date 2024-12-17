@@ -23,7 +23,7 @@ class SelectEmojiClassItem extends HookWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: getBackgroundColor(
+        backgroundColor: _getBackgroundColor(
           isSelected: isSelected,
           isHovered: hovered.value,
           isPressed: clicked.value,
@@ -47,22 +47,49 @@ class SelectEmojiClassItem extends HookWidget {
     );
   }
 
-  Color? getBackgroundColor({
+  Color? _getBackgroundColor({
+    required bool isSelected,
+    required bool isHovered,
+    required bool isPressed,
+  }) {
+    if (AppConstants.isDesktopPlatform) {
+      return _getDesktopBackgroundColor(
+        isSelected: isSelected,
+        isHovered: isHovered,
+        isPressed: isPressed,
+      );
+    }
+    if (isSelected) {
+      return Colors.white.withValues(alpha: 0.1);
+    }
+    if (isPressed) {
+      return Colors.white.withValues(alpha: 0.075);
+    }
+
+    if (isHovered) {
+      return Colors.white.withValues(alpha: 0.05);
+    }
+
+    return null;
+  }
+
+  Color? _getDesktopBackgroundColor({
     required bool isSelected,
     required bool isHovered,
     required bool isPressed,
   }) {
     if (isSelected) {
-      return Colors.white.withOpacity(0.1);
+      return Colors.indigo;
     }
+
     if (isPressed) {
-      return Colors.white.withOpacity(0.075);
+      return AppColors.backgroundColor.withValues(alpha: 0.75);
     }
 
     if (isHovered) {
-      return Colors.white.withOpacity(0.05);
+      return AppColors.backgroundColor.withValues(alpha: 0.5);
     }
 
-    return null;
+    return AppColors.backgroundColor.withValues(alpha: 0.9);
   }
 }
